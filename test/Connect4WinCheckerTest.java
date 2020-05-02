@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-import src.Connect4WinChecker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
