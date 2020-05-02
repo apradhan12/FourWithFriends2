@@ -1,6 +1,8 @@
 package messages;
 
-public class SetPlayerTurnServerMessage {
+import java.io.Serializable;
+
+public class SetPlayerTurnServerMessage implements Serializable {
   private char player;
 
   public SetPlayerTurnServerMessage(char player) {

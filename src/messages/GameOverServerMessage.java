@@ -1,6 +1,8 @@
 package messages;
 
-public class GameOverServerMessage {
+import java.io.Serializable;
+
+public class GameOverServerMessage implements Serializable {
   private char winner;
 
   public GameOverServerMessage(char winner) {

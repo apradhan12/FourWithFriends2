@@ -1,6 +1,8 @@
 package messages;
 
-public class GetDropColumnClientMessage {
+import java.io.Serializable;
+
+public class GetDropColumnClientMessage implements Serializable {
   private int column;
 
   public GetDropColumnClientMessage(int column) {

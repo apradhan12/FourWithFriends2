@@ -1,5 +1,7 @@
 package messages;
 
-public class SetPlayerColorClientMessage {
+import java.io.Serializable;
+
+public class SetPlayerColorClientMessage implements Serializable {
 
 }

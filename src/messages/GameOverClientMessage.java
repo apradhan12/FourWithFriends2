@@ -1,5 +1,7 @@
 package messages;
 
-public class GameOverClientMessage {
+import java.io.Serializable;
+
+public class GameOverClientMessage implements Serializable {
 
 }

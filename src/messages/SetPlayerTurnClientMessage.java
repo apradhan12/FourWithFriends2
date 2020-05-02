@@ -1,5 +1,7 @@
 package messages;
 
-public class SetPlayerTurnClientMessage {
+import java.io.Serializable;
+
+public class SetPlayerTurnClientMessage implements Serializable {
 
 }

@@ -1,6 +1,8 @@
 package messages;
 
-public class RegisterPlayerDropServerMessage {
+import java.io.Serializable;
+
+public class RegisterPlayerDropServerMessage implements Serializable {
   private char player;
   private int column;
   private int row;
