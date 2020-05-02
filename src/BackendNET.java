@@ -12,48 +12,40 @@ import java.io.*;
 
 public class BackendNET {
 
-  public static void main(String[] args) {
-    new BackendNET();
-  }
-
-  //creating src.BackendNET constructor
-  public BackendNET() {
-    ServerSocket ss = null;
-    //Initializes a blank connect4 board
-    char[][] board = {{'N', 'N', 'N', 'N', 'N', 'N'}, {'N', 'N', 'N', 'N', 'N', 'N'},
-        {'N', 'N', 'N', 'N', 'N', 'N'}, {'N', 'N', 'N', 'N', 'N', 'N'},
-        {'N', 'N', 'N', 'N', 'N', 'N'},
-        {'N', 'N', 'N', 'N', 'N', 'N'}, {'N', 'N', 'N', 'N', 'N', 'N'}};
-
-    // getting the addresses of the localhost and the computer
-    try {
-      System.out.println("getLocalHost: " + InetAddress.getLocalHost());
-      System.out.println("getByName:    " + InetAddress.getByName("localhost"));
-
-      ss = new ServerSocket(16789);
-      Socket cs = null;
-      System.out.println("Server Started");
-
-      //after socket is created the server waits for a client to be accepted
-      System.out.println("Waiting for a client...");
-      while (true) {
-        cs = ss.accept();
-        System.out.println("src.Client accepted");
-        ThreadServer ts = new ThreadServer(cs);
-        ts.start();
-      }
-    } catch (BindException be) {
-      System.out.println("Server running, stopping");
-    } catch (IOException ioe) {
-      System.out.println("IO Exception has occured inside catch (constructor)");
-      ioe.printStackTrace();
-    }
-  }
-
   private static final char CLIENT1_COLOR = 'O';
   private static final char CLIENT2_COLOR = 'B';
   private static final int NUM_COLUMNS = 7;
   private static final int NUM_ROWS = 6;
+
+  private static final int PORT_NUM = 16789;
+
+  public static void main(String[] args) {
+    new BackendNET().runServer();
+  }
+
+  public void runServer() {
+    try (ServerSocket listener = new ServerSocket(PORT_NUM)) {
+      System.out.println("Server is now running at port: " + PORT_NUM);
+      Socket clientSocket1 = listener.accept();
+      Socket clientSocket2 = listener.accept();
+      ObjectOutputStream out1 = new ObjectOutputStream(clientSocket1.getOutputStream());
+      ObjectInputStream in1 = new ObjectInputStream(clientSocket1.getInputStream());
+      ObjectOutputStream out2 = new ObjectOutputStream(clientSocket2.getOutputStream());
+      ObjectInputStream in2 = new ObjectInputStream(clientSocket2.getInputStream());
+      IClient client1 = new ProxyClient(in1, out1);
+      IClient client2 = new ProxyClient(in2, out2);
+      runGame(client1, client2);
+      out1.close();
+      in1.close();
+      out2.close();
+      in2.close();
+      clientSocket1.close();
+      clientSocket2.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new IllegalStateException("IO failed");
+    }
+  }
 
   /**
    * The client indexes rows with 0 at the top, but the server has 0 at the bottom.
@@ -134,7 +126,7 @@ public class BackendNET {
     return false;
   }
 
-  public void runGame(IClient client1, IClient client2) {
+  public static void runGame(IClient client1, IClient client2) {
     char[][] board = getInitialBoard();
     client1.setPlayerColor(CLIENT1_COLOR);
     client2.setPlayerColor(CLIENT2_COLOR);
@@ -155,52 +147,4 @@ public class BackendNET {
       client2.gameOver('N');
     }
   }
-
-  //Threadserver class
-  class ThreadServer extends Thread {
-
-    Socket cs;
-
-    public ThreadServer(Socket cs) {
-      this.cs = cs;
-    }
-
-    //run method that handles receiving messages from client as well as sending messages back
-    public void run() {
-      BufferedReader br;
-      PrintWriter pw;
-      String clientMsg;
-      Object clientData;
-      PrintStream ps;
-      ObjectInputStream ois;
-      ObjectOutputStream os;
-
-      try {
-        br = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-
-        pw = new PrintWriter(new OutputStreamWriter(cs.getOutputStream()));
-
-        ois = new ObjectInputStream(cs.getInputStream());
-        os = new ObjectOutputStream(cs.getOutputStream());
-
-        clientMsg = br.readLine();
-        clientData = ois.readObject();
-        System.out.println("Server read: " + clientMsg);
-        pw.println(clientMsg.toUpperCase());
-        os.writeObject(clientData);
-
-        pw.flush();
-        os.flush();
-      } catch (IOException ioe) {
-        System.out.println("IO exception occurred inside catch");
-        ioe.printStackTrace();
-      } catch (ClassNotFoundException cnf) {
-
-        System.out.println("Class not found");
-        cnf.printStackTrace();
-
-      }
-
-    } //run method
-  } //ThreadServer
-}//src.BackendNET
+}
