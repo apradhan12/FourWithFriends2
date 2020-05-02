@@ -8,17 +8,11 @@ import javax.sound.sampled.*;
 
 public class Client extends JFrame implements ActionListener {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = 2622182545810752592L;
-
   // create variables
   JPanel mainGrid = new JPanel(new GridLayout(0, 7));
 
   //misc variables
   char playerColor = 'B';
-
 
   //array for local board state
   char[][] board = {
