@@ -9,15 +9,15 @@ import java.util.*;
 public class Connect4WinChecker {
 
   //Attributes
-  private final int BOARD_WIDTH = 7;
-  private final int BOARD_HEIGHT = 6;
-  private final int WINNING_LENGTH = 4;
+  private static final int BOARD_WIDTH = 7;
+  private static final int BOARD_HEIGHT = 6;
+  private static final int WINNING_LENGTH = 4;
 
   /**
    * A method to determine whether a piece placed ino a connect4 board forms a continuous line of 4
    * pieces in a row horizontally, vertically, or diagonally
    */
-  public boolean checkWin(char[][] board, int column) {
+  public static boolean checkWin(char[][] board, int column) {
     char playerColor = getPlayerColor(board, column);
     return (checkColumn(board, column, playerColor) ||
         checkRow(board, column, playerColor) ||
@@ -31,7 +31,7 @@ public class Connect4WinChecker {
    *
    * @return a character representing the color of the player's piece (Y or R)
    */
-  public char getPlayerColor(char[][] board, int column) {
+  public static char getPlayerColor(char[][] board, int column) {
     int rowNum = getRowNum(board, column);
     return board[column][rowNum];
   }
@@ -44,7 +44,7 @@ public class Connect4WinChecker {
    *
    * @return a boolean representing if the player has won
    */
-  public boolean checkRow(char[][] board, int column, char playerColor) {
+  public static boolean checkRow(char[][] board, int column, char playerColor) {
     int rowNum = getRowNum(board, column);
     char[] row = new char[BOARD_WIDTH];
     for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -58,7 +58,7 @@ public class Connect4WinChecker {
    *
    * @return the index of the row with the highest piece
    */
-  public int getRowNum(char[][] board, int column) {
+  public static int getRowNum(char[][] board, int column) {
     int rowNum = 0;
     char nextChar = board[column][rowNum];
     if (nextChar == 'N') {
@@ -87,7 +87,7 @@ public class Connect4WinChecker {
    *
    * @return a boolean representing if the player has won
    */
-  public boolean checkColumn(char[][] board, int column, char playerColor) {
+  public static boolean checkColumn(char[][] board, int column, char playerColor) {
     return checkLine(board[column], playerColor);
   }
 
@@ -95,7 +95,7 @@ public class Connect4WinChecker {
    * A method to determine if a given character array has a streak of 4 or more of the given
    * player's color
    */
-  public boolean checkLine(char[] line, char playerColor) {
+  public static boolean checkLine(char[] line, char playerColor) {
     int streak = 0;
     for (char c : line) {
       if (c == playerColor) {
@@ -118,7 +118,7 @@ public class Connect4WinChecker {
    *
    * @return a boolean representing if the player has won
    */
-  public boolean checkDiagonals(char[][] board, int column, char playerColor) {
+  public static boolean checkDiagonals(char[][] board, int column, char playerColor) {
     char[] positiveSlope = getDiagonal(board, column, true);
     char[] negativeSlope = getDiagonal(board, column, false);
     return (checkLine(positiveSlope, playerColor) || checkLine(negativeSlope, playerColor));
@@ -128,7 +128,7 @@ public class Connect4WinChecker {
    * Return a character array of all the characters in the diagonal containing the top piece of a
    * given column on a connect4 board, given whether that diagonal has a positive or negative slope
    */
-  public char[] getDiagonal(char[][] board, int column, boolean positiveSlope) {
+  public static char[] getDiagonal(char[][] board, int column, boolean positiveSlope) {
     List<Character> diagonalArrayList = new ArrayList<Character>();
     int[] diagonalStart = getDiagonalStart(board, column, positiveSlope);
     int rowIndex = diagonalStart[1];
@@ -159,7 +159,7 @@ public class Connect4WinChecker {
    * @return an integer array with the first integer being the column number of the diagonal's
    * starting point and the second integer representing the row number of the starting point.
    */
-  public int[] getDiagonalStart(char[][] board, int column, boolean positiveSlope) {
+  public static int[] getDiagonalStart(char[][] board, int column, boolean positiveSlope) {
     int rowIndex = getRowNum(board, column);
     int columnIndex = column;
     while (columnIndex >= 0 && rowIndex >= 0 && rowIndex < BOARD_HEIGHT) {
