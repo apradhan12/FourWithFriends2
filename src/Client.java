@@ -9,6 +9,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.*;
 
 public class Client extends JFrame implements ActionListener {
+
   /**
    *
    */
@@ -23,12 +24,12 @@ public class Client extends JFrame implements ActionListener {
 
   //array for local board state
   char[][] board = {
-    {'N','N','N','N','N','N','N'},
-    {'N','N','N','N','N','N','N'},
-    {'N','N','N','N','N','N','N'},
-    {'N','N','N','N','N','N','N'},
-    {'N','N','N','N','N','N','N'},
-    {'N','N','N','N','N','N','N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
+      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
   };
 
 
@@ -110,17 +111,17 @@ public class Client extends JFrame implements ActionListener {
 
   //array for local board state
   JLabel[][] guiBoard = {
-    {R6C1, R6C2, R6C3, R6C4, R6C5, R6C6, R6C7},
-    {R5C1, R5C2, R5C3, R5C4, R5C5, R5C6, R5C7},
-    {R4C1, R4C2, R4C3, R4C4, R4C5, R4C6, R4C7},
-    {R3C1, R3C2, R3C3, R3C4, R3C5, R3C6, R3C7},
-    {R2C1, R2C2, R2C3, R2C4, R2C5, R2C6, R2C7},
-    {R1C1, R1C2, R1C3, R1C4, R1C5, R1C6, R1C7}
+      {R6C1, R6C2, R6C3, R6C4, R6C5, R6C6, R6C7},
+      {R5C1, R5C2, R5C3, R5C4, R5C5, R5C6, R5C7},
+      {R4C1, R4C2, R4C3, R4C4, R4C5, R4C6, R4C7},
+      {R3C1, R3C2, R3C3, R3C4, R3C5, R3C6, R3C7},
+      {R2C1, R2C2, R2C3, R2C4, R2C5, R2C6, R2C7},
+      {R1C1, R1C2, R1C3, R1C4, R1C5, R1C6, R1C7}
   };
 
 
   //constructor
-  public Client(){
+  public Client() {
 
     //Create the menu bar.
     mBar = new JMenuBar();
@@ -218,102 +219,98 @@ public class Client extends JFrame implements ActionListener {
   }
 
   //ActionListener things
-  public void actionPerformed(ActionEvent event){
-      //set object
-      Object obj = event.getSource();
-      serverInterface servI = new serverInterface();
+  public void actionPerformed(ActionEvent event) {
+    //set object
+    Object obj = event.getSource();
+    serverInterface servI = new serverInterface();
 
-      if (obj == mConnect){
-        String stPort = JOptionPane.showInputDialog( null, "Input Server Port \n Or click OK for default", "16789");
-        int port = Integer.parseInt(stPort);
-        String ip = JOptionPane.showInputDialog(null, "Input Server IP \n Or Click OK for default", "123.456.7.89");
+    if (obj == mConnect) {
+      String stPort = JOptionPane
+          .showInputDialog(null, "Input Server Port \n Or click OK for default", "16789");
+      int port = Integer.parseInt(stPort);
+      String ip = JOptionPane
+          .showInputDialog(null, "Input Server IP \n Or Click OK for default", "123.456.7.89");
 
-        System.out.println("STPort " + stPort + " Port " + port + " IP " + ip);
+      System.out.println("STPort " + stPort + " Port " + port + " IP " + ip);
 
-        try {
-          servI.socketConnect(ip, port);
-        }
-        catch (UnknownHostException unh){unh.printStackTrace();}
-        catch (IOException ioe){ioe.printStackTrace();}
+      try {
+        servI.socketConnect(ip, port);
+      } catch (UnknownHostException unh) {
+        unh.printStackTrace();
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
       }
-      if (obj == mExit){
-        servI.socketDisconnect();
-        System.exit(0);
+    }
+    if (obj == mExit) {
+      servI.socketDisconnect();
+      System.exit(0);
+    }
+
+    //button 1
+    if (obj == C1Button) {
+      if (playerColor == 'O') {
+        dropOrange(0);
+      } else if (playerColor == 'B') {
+        dropBlue(0);
       }
+    }
 
-      //button 1
-      if (obj == C1Button){
-        if (playerColor == 'O') {
-          dropOrange(0);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(0);
-        }
+    //button 2
+    if (obj == C2Button) {
+      if (playerColor == 'O') {
+        dropOrange(1);
+      } else if (playerColor == 'B') {
+        dropBlue(1);
       }
+    }
 
-      //button 2
-      if (obj == C2Button){
-        if (playerColor == 'O') {
-          dropOrange(1);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(1);
-        }
+    //button 3
+    if (obj == C3Button) {
+      if (playerColor == 'O') {
+        dropOrange(2);
+      } else if (playerColor == 'B') {
+        dropBlue(2);
       }
+    }
 
-      //button 3
-      if (obj == C3Button){
-        if (playerColor == 'O') {
-          dropOrange(2);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(2);
-        }
+    //button 4
+    if (obj == C4Button) {
+      if (playerColor == 'O') {
+        dropOrange(3);
+      } else if (playerColor == 'B') {
+        dropBlue(3);
       }
+    }
 
-      //button 4
-      if (obj == C4Button){
-        if (playerColor == 'O') {
-          dropOrange(3);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(3);
-        }
+    //button 5
+    if (obj == C5Button) {
+      if (playerColor == 'O') {
+        dropOrange(4);
+      } else if (playerColor == 'B') {
+        dropBlue(4);
       }
+    }
 
-      //button 5
-      if (obj == C5Button){
-        if (playerColor == 'O') {
-          dropOrange(4);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(4);
-        }
+    //button 6
+    if (obj == C6Button) {
+      if (playerColor == 'O') {
+        dropOrange(5);
+      } else if (playerColor == 'B') {
+        dropBlue(5);
       }
+    }
 
-      //button 6
-      if (obj == C6Button){
-        if (playerColor == 'O') {
-          dropOrange(5);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(5);
-        }
+    //button 7
+    if (obj == C7Button) {
+      if (playerColor == 'O') {
+        dropOrange(6);
+      } else if (playerColor == 'B') {
+        dropBlue(6);
       }
-
-      //button 7
-      if (obj == C7Button){
-        if (playerColor == 'O') {
-          dropOrange(6);
-        }
-        else if (playerColor == 'B') {
-          dropBlue(6);
-        }
-      }
+    }
 
 
-
-   }
+  }
 
   //main
   public static void main(String[] args) {
@@ -330,17 +327,19 @@ public class Client extends JFrame implements ActionListener {
     boolean needPick = true;
     while (needPick) {
       Object[] options = {"Orange", "Blue"};
-       int n = JOptionPane.showOptionDialog(frame, "Would you like to be orange or blue? (pick the oposite color of your friend)", "An Important Question",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-       if (n == JOptionPane.YES_OPTION) {
-         frame.setPlayerColor('O');
-         needPick = false;
-       } else if (n == JOptionPane.NO_OPTION) {
-         frame.setPlayerColor('B');
-         needPick = false;
-       }
+      int n = JOptionPane.showOptionDialog(frame,
+          "Would you like to be orange or blue? (pick the oposite color of your friend)",
+          "An Important Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+          options, options[0]);
+      if (n == JOptionPane.YES_OPTION) {
+        frame.setPlayerColor('O');
+        needPick = false;
+      } else if (n == JOptionPane.NO_OPTION) {
+        frame.setPlayerColor('B');
+        needPick = false;
+      }
     }
   }
-
 
 
   //methods
@@ -350,25 +349,27 @@ public class Client extends JFrame implements ActionListener {
 
   public void playSound() {
     try {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/ClientAssets/theme.wav").getAbsoluteFile());
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
-        clip.start();
-    } catch(Exception ex) {
-        System.out.println("Error with playing sound.");
-        ex.printStackTrace();
+      AudioInputStream audioInputStream = AudioSystem
+          .getAudioInputStream(new File("/ClientAssets/theme.wav").getAbsoluteFile());
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioInputStream);
+      clip.start();
+    } catch (Exception ex) {
+      System.out.println("Error with playing sound.");
+      ex.printStackTrace();
     }
   }
 
   public void playSoundEffect() {
     try {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("ClientAssets/drop.wav").getAbsoluteFile());
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
-        clip.start();
-    } catch(Exception ex) {
-        System.out.println("Error with playing sound.");
-        ex.printStackTrace();
+      AudioInputStream audioInputStream = AudioSystem
+          .getAudioInputStream(new File("ClientAssets/drop.wav").getAbsoluteFile());
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioInputStream);
+      clip.start();
+    } catch (Exception ex) {
+      System.out.println("Error with playing sound.");
+      ex.printStackTrace();
     }
   }
 
@@ -379,21 +380,19 @@ public class Client extends JFrame implements ActionListener {
 
     //dropping logic
     for (int i = 0; (i < 6) && (keepDropping); i++) {
-      toFall = i-1;
+      toFall = i - 1;
       if (board[i][column] != 'N') {
         keepDropping = false;
       }
     }
     //check for not first time
-    if ((toFall == 4) && (board[toFall+1][column] != 'O')) {
+    if ((toFall == 4) && (board[toFall + 1][column] != 'O')) {
       toFall++;
     }
     guiBoard[toFall][column].setIcon(orange);
     board[toFall][column] = 'O';
 
     //servI.socketSend();
-
-
 
     playSoundEffect();
   }
@@ -405,13 +404,13 @@ public class Client extends JFrame implements ActionListener {
 
     //dropping logic
     for (int i = 0; (i < 6) && (keepDropping); i++) {
-      toFall = i-1;
+      toFall = i - 1;
       if (board[i][column] != 'N') {
         keepDropping = false;
       }
     }
     //check for not first time
-    if ((toFall == 4) && (board[toFall+1][column] != 'B')) {
+    if ((toFall == 4) && (board[toFall + 1][column] != 'B')) {
       toFall++;
     }
     guiBoard[toFall][column].setIcon(blue);
@@ -423,25 +422,29 @@ public class Client extends JFrame implements ActionListener {
 
     public Socket soc;
 
-    public void socketConnect (String pasIP, int pasPT) throws UnknownHostException, IOException {
-      soc = new Socket (pasIP, pasPT);
+    public void socketConnect(String pasIP, int pasPT) throws UnknownHostException, IOException {
+      soc = new Socket(pasIP, pasPT);
     }
-    public void socketDisconnect (){
+
+    public void socketDisconnect() {
       try {
         soc.close();
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
       }
-      catch(IOException ioe){ioe.printStackTrace();}
     }
-    public void socketSend (Object obj) {
-      try {         
-        BufferedReader br = new BufferedReader( new InputStreamReader( soc.getInputStream() ) );
-        PrintWriter    pw = new PrintWriter(    new OutputStreamWriter( soc.getOutputStream()));
-        pw.println( obj );
+
+    public void socketSend(Object obj) {
+      try {
+        BufferedReader br = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()));
+        pw.println(obj);
         pw.flush();
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
       }
-      catch (IOException ioe) { ioe.printStackTrace(); }
-      
-    } 
+
+    }
   }
 
 }
