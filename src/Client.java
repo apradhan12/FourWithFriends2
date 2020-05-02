@@ -220,7 +220,10 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   private void connectToServer(String host, int port) {
     System.out.println(String.format("Connecting to %s:%s", host, port));
-    new ProxyServer(host, port, this);
+    Thread proxyServerThread = new Thread(() -> {
+      new ProxyServer(host, port, this);
+    });
+    proxyServerThread.start();
   }
 
   //ActionListener things
