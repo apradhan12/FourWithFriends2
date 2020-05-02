@@ -12,7 +12,7 @@ public class Client extends JFrame implements ActionListener, IClient {
   JPanel mainGrid = new JPanel(new GridLayout(0, 7));
 
   //misc variables
-  char playerColor = 'B';
+  char playerColor;
 
   //array for local board state
   char[][] board = {
@@ -207,7 +207,7 @@ public class Client extends JFrame implements ActionListener, IClient {
     mainGrid.add(R1C6);
     mainGrid.add(R1C7);
 
-    //guiBoard[0][1].setIcon(blue);
+    playerColor = 'N';
   }
 
   //ActionListener things
@@ -316,7 +316,7 @@ public class Client extends JFrame implements ActionListener, IClient {
     frame.playSound();
 
     // 'O', 'B'
-    frame.playerColor = 'O';
+    frame.setPlayerColor('O');
   }
 
 
