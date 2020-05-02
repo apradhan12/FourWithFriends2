@@ -2,6 +2,9 @@ import java.net.*;
 import java.io.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.sound.sampled.AudioInputStream;
@@ -34,9 +37,11 @@ public class Client extends JFrame implements ActionListener, IClient {
   private JMenuItem mExit;
 
   //icons
-  ImageIcon white = new ImageIcon("ClientAssets/white64.png");
-  ImageIcon blue = new ImageIcon("ClientAssets/blue64.png");
-  ImageIcon orange = new ImageIcon("ClientAssets/orange64.png");
+  private static final ImageIcon white = new ImageIcon("ClientAssets/white64.png");
+  private static final ImageIcon blue = new ImageIcon("ClientAssets/blue64.png");
+  private static final ImageIcon orange = new ImageIcon("ClientAssets/orange64.png");
+  private static final Map<Character, ImageIcon> CHARACTER_MAP = Map.of('B', blue,
+      'O', orange, 'N', white);
 
   //Labels
   //Row 1 (starting from the bottom)
@@ -241,68 +246,38 @@ public class Client extends JFrame implements ActionListener, IClient {
 
     //button 1
     if (obj == C1Button) {
-      if (playerColor == 'O') {
-        dropOrange(0);
-      } else if (playerColor == 'B') {
-        dropBlue(0);
-      }
+      drop(0);
     }
 
     //button 2
     if (obj == C2Button) {
-      if (playerColor == 'O') {
-        dropOrange(1);
-      } else if (playerColor == 'B') {
-        dropBlue(1);
-      }
+      drop(1);
     }
 
     //button 3
     if (obj == C3Button) {
-      if (playerColor == 'O') {
-        dropOrange(2);
-      } else if (playerColor == 'B') {
-        dropBlue(2);
-      }
+      drop(2);
     }
 
     //button 4
     if (obj == C4Button) {
-      if (playerColor == 'O') {
-        dropOrange(3);
-      } else if (playerColor == 'B') {
-        dropBlue(3);
-      }
+      drop(3);
     }
 
     //button 5
     if (obj == C5Button) {
-      if (playerColor == 'O') {
-        dropOrange(4);
-      } else if (playerColor == 'B') {
-        dropBlue(4);
-      }
+      drop(4);
     }
 
     //button 6
     if (obj == C6Button) {
-      if (playerColor == 'O') {
-        dropOrange(5);
-      } else if (playerColor == 'B') {
-        dropBlue(5);
-      }
+      drop(5);
     }
 
     //button 7
     if (obj == C7Button) {
-      if (playerColor == 'O') {
-        dropOrange(6);
-      } else if (playerColor == 'B') {
-        dropBlue(6);
-      }
+      drop(6);
     }
-
-
   }
 
   //main
@@ -320,6 +295,9 @@ public class Client extends JFrame implements ActionListener, IClient {
     frame.setPlayerColor('O');
   }
 
+  private int chosenColumn = -1;
+  private volatile boolean columnIsChosen = false;
+  private char playerTurn = 'N';
 
   //methods
   @Override
@@ -353,70 +331,39 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
   }
 
-  void dropOrange(int column) {
-    //variables
-    int toFall = 0;
-    boolean keepDropping = true;
-
-    //dropping logic
-    for (int i = 0; (i < 6) && (keepDropping); i++) {
-      toFall = i - 1;
-      if (board[i][column] != 'N') {
-        keepDropping = false;
-      }
-    }
-    //check for not first time
-    if ((toFall == 4) && (board[toFall + 1][column] != 'O')) {
-      toFall++;
-    }
-    guiBoard[toFall][column].setIcon(orange);
-    board[toFall][column] = 'O';
-    System.out.println("Here is Board: " + Arrays.deepToString(board));
-
-    //servI.socketSend();
-
-    playSoundEffect();
-  }
-
-  void dropBlue(int column) {
-    //variables
-    int toFall = 0;
-    boolean keepDropping = true;
-
-    //dropping logic
-    for (int i = 0; (i < 6) && (keepDropping); i++) {
-      toFall = i - 1;
-      if (board[i][column] != 'N') {
-        keepDropping = false;
-      }
-    }
-    //check for not first time
-    if ((toFall == 4) && (board[toFall + 1][column] != 'B')) {
-      toFall++;
-    }
-    guiBoard[toFall][column].setIcon(blue);
-    board[toFall][column] = 'B';
-    playSoundEffect();
+  void drop(int column) {
+    chosenColumn = column;
+    columnIsChosen = true;
   }
 
   @Override
   public int getDropColumn() {
-    return 0;
+    columnIsChosen = false;
+    while (!columnIsChosen) {
+      try {
+        wait();
+      } catch (InterruptedException ignored) {}
+    }
+    return chosenColumn;
   }
 
   @Override
   public void setPlayerTurn(char player) {
-
+    playerTurn = player;
+    // show in GUI
   }
 
   @Override
   public void registerPlayerDrop(char player, int column, int row) {
-
+    guiBoard[row][column].setIcon(CHARACTER_MAP.get(player));
+    board[row][column] = player;
+    System.out.println("Here is Board: " + Arrays.deepToString(board));
+    playSoundEffect();
   }
 
   @Override
   public void gameOver(char winner) {
-
+    // show in GUI
   }
 
   static class serverInterface {
