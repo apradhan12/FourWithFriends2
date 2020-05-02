@@ -230,14 +230,7 @@ public class Client extends JFrame implements ActionListener, IClient {
           .showInputDialog(null, "Input Server IP \n Or Click OK for default", "123.456.7.89");
 
       System.out.println("STPort " + stPort + " Port " + port + " IP " + ip);
-
-      try {
-        servI.socketConnect(ip, port);
-      } catch (UnknownHostException unh) {
-        unh.printStackTrace();
-      } catch (IOException ioe) {
-        ioe.printStackTrace();
-      }
+      new ProxyServer(ip, port, this);
     }
     if (obj == mExit) {
       servI.socketDisconnect();
