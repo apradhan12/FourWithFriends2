@@ -50,6 +50,51 @@ public class BackendNET {
     }
   }
 
+  private static final char CLIENT1_COLOR = 'O';
+  private static final char CLIENT2_COLOR = 'B';
+  private static final int NUM_COLUMNS = 7;
+  private static final int NUM_ROWS = 6;
+  private static final char[] PLAYER_TURN_ORDER = {CLIENT1_COLOR, CLIENT2_COLOR};
+
+  /**
+   * The client indexes rows with 0 at the top, but the server has 0 at the bottom.
+   * This is an involutory function, i.e. when performed twice returns the original result,
+   * so the method is the same for converting from client to server row numbers as server to
+   * client row numbers.
+   */
+  private int convertRowNum(int clientRowNum) {
+    return (NUM_ROWS - 1) - clientRowNum;
+  }
+
+  private char[][] getInitialBoard() {
+    char[][] board = new char[NUM_COLUMNS][NUM_ROWS];
+    for (int col = 0; col < NUM_COLUMNS; col++) {
+      for (int row = 0; row < NUM_ROWS; row++) {
+        board[col][row] = 'N';
+      }
+    }
+    return board;
+  }
+
+  private boolean isBoardFull(char[][] board) {
+    for (int col = 0; col < NUM_COLUMNS; col++) {
+      for (int row = 0; row < NUM_ROWS; row++) {
+        if (board[col][row] != 'N') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public void runGame(IClient client1, IClient client2) {
+    char[][] board = getInitialBoard();
+    client1.setPlayerColor(CLIENT1_COLOR);
+    client2.setPlayerColor(CLIENT2_COLOR);
+    while (!isBoardFull(board) && )
+
+  }
+
   /**
    * The following is roughly the code needed to implement win checker The code below cannot be
    * implemented, since the method cannot return multiple things If there is a way to send clients
