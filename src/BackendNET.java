@@ -94,8 +94,6 @@ public class BackendNET {
          **/
          return board;
       }
-      //At this point the player has made their move uneventfully. Pass the turn.
-      return board;
    }
 
 
