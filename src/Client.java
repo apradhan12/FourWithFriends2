@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.sound.sampled.AudioInputStream;
@@ -370,6 +371,7 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
     guiBoard[toFall][column].setIcon(orange);
     board[toFall][column] = 'O';
+    System.out.println("Here is Board: " + Arrays.deepToString(board));
 
     //servI.socketSend();
 
