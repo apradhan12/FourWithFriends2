@@ -214,6 +214,13 @@ public class Client extends JFrame implements ActionListener, IClient {
     mainGrid.add(R1C7);
 
     playerColor = 'N';
+
+    connectToServer("localhost", 16789);
+  }
+
+  private void connectToServer(String host, int port) {
+    System.out.println(String.format("Connecting to %s:%s", host, port));
+    new ProxyServer(host, port, this);
   }
 
   //ActionListener things
@@ -227,10 +234,8 @@ public class Client extends JFrame implements ActionListener, IClient {
           .showInputDialog(null, "Input Server Port \n Or click OK for default", "16789");
       int port = Integer.parseInt(stPort);
       String ip = JOptionPane
-          .showInputDialog(null, "Input Server IP \n Or Click OK for default", "123.456.7.89");
-
-      System.out.println("STPort " + stPort + " Port " + port + " IP " + ip);
-      new ProxyServer(ip, port, this);
+          .showInputDialog(null, "Input Server IP \n Or Click OK for default", "localhost");
+      connectToServer(ip, port);
     }
     if (obj == mExit) {
       servI.socketDisconnect();

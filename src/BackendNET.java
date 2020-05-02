@@ -134,13 +134,16 @@ public class BackendNET {
     while (!isBoardFull(board)) {
      isWin = playTurn(board, client1, client2, CLIENT1_COLOR);
       if (isWin) {
+        System.out.println("Win for client 1");
         break;
       }
       isWin = playTurn(board, client2, client1, CLIENT2_COLOR);
       if (isWin) {
+        System.out.println("Win for client 2");
         break;
       }
     }
+    System.out.println("Is the board full? " + isBoardFull(board));
     // can have board full and win at the same time, so need to store isWin boolean
     if (!isWin) {
       client1.gameOver('N');
