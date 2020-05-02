@@ -70,7 +70,7 @@ public class BackendNET {
   private static boolean isBoardFull(char[][] board) {
     for (int col = 0; col < NUM_COLUMNS; col++) {
       for (int row = 0; row < NUM_ROWS; row++) {
-        if (board[col][row] != 'N') {
+        if (board[col][row] == 'N') {
           return false;
         }
       }
