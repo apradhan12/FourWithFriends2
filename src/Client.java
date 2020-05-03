@@ -238,7 +238,6 @@ public class Client extends JFrame implements ActionListener, IClient {
 
     //set object
     Object obj = event.getSource();
-    serverInterface servI = new serverInterface();
 
     if (obj == mConnect) {
       String stPort = JOptionPane
@@ -249,7 +248,6 @@ public class Client extends JFrame implements ActionListener, IClient {
       connectToServer(ip, port);
     }
     if (obj == mExit) {
-      servI.socketDisconnect();
       System.exit(0);
     }
 
@@ -387,35 +385,6 @@ public class Client extends JFrame implements ActionListener, IClient {
       status.setText("You lost.");
     } else {
       status.setText("It's a tie.");
-    }
-  }
-
-  static class serverInterface {
-
-    public Socket soc;
-
-    public void socketConnect(String pasIP, int pasPT) throws UnknownHostException, IOException {
-      soc = new Socket(pasIP, pasPT);
-    }
-
-    public void socketDisconnect() {
-      try {
-        soc.close();
-      } catch (IOException ioe) {
-        ioe.printStackTrace();
-      }
-    }
-
-    public void socketSend(Object obj) {
-      try {
-        BufferedReader br = new BufferedReader(new InputStreamReader(soc.getInputStream()));
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()));
-        pw.println(obj);
-        pw.flush();
-      } catch (IOException ioe) {
-        ioe.printStackTrace();
-      }
-
     }
   }
 
