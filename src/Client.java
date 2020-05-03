@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,6 @@ import java.util.Map;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Client code for FourWithFriends.
@@ -26,7 +27,7 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   // create variables
   JPanel containerPanel = new JPanel();
-  JLabel status = new JLabel();
+  JLabel status = new JLabel("Waiting for game to start...");
 
   JPanel mainGrid = new JPanel(new GridLayout(0, 7));
 
@@ -130,8 +131,9 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   //constructor
   public Client() {
-    containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
-    containerPanel.add(status);
+    containerPanel.setLayout(new BorderLayout());
+    containerPanel.add(status, BorderLayout.NORTH);
+    status.setHorizontalAlignment(SwingConstants.LEFT);
 
     //Create the menu bar.
     //items for menu
@@ -160,7 +162,7 @@ public class Client extends JFrame implements ActionListener, IClient {
     //main grid
     mainGrid.setBackground(new Color(0, 0, 0));
 
-    containerPanel.add(mainGrid);
+    containerPanel.add(mainGrid, BorderLayout.CENTER);
     add(containerPanel);
 
     //add objects to main grid
@@ -320,7 +322,7 @@ public class Client extends JFrame implements ActionListener, IClient {
           .getAudioInputStream(new File("ClientAssets/theme.wav").getAbsoluteFile());
       Clip clip = AudioSystem.getClip();
       clip.open(audioInputStream);
-      clip.start();
+//      clip.start();
     } catch (Exception ex) {
       System.out.println("Error with playing sound.");
       ex.printStackTrace();
