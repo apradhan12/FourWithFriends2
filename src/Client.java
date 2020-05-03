@@ -13,6 +13,9 @@ import javax.sound.sampled.*;
 public class Client extends JFrame implements ActionListener, IClient {
 
   // create variables
+  JPanel containerPanel = new JPanel();
+  JLabel status = new JLabel();
+
   JPanel mainGrid = new JPanel(new GridLayout(0, 7));
 
   //misc variables
@@ -120,6 +123,8 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   //constructor
   public Client() {
+    containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+    containerPanel.add(status);
 
     //Create the menu bar.
     mBar = new JMenuBar();
@@ -147,7 +152,8 @@ public class Client extends JFrame implements ActionListener, IClient {
     //main grid
     mainGrid.setBackground(new Color(0, 0, 0));
 
-    add(mainGrid, BorderLayout.CENTER);
+    containerPanel.add(mainGrid);
+    add(containerPanel);
 
     //add objects to main grid
     mainGrid.add(C1Button);
@@ -293,9 +299,6 @@ public class Client extends JFrame implements ActionListener, IClient {
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
     frame.playSound();
-
-    // 'O', 'B'
-    frame.setPlayerColor('O');
   }
 
   private int chosenColumn = -1;
@@ -361,7 +364,11 @@ public class Client extends JFrame implements ActionListener, IClient {
   @Override
   public void setPlayerTurn(char player) {
     playerTurn = player;
-    // show in GUI
+    if (player == playerColor) {
+      status.setText("It's your turn");
+    } else {
+      status.setText("It's the opponent's turn");
+    }
   }
 
   @Override
@@ -374,7 +381,13 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   @Override
   public void gameOver(char winner) {
-    // show in GUI
+    if (winner == playerColor) {
+      status.setText("You won!");
+    } else if (winner != 'N') {
+      status.setText("You lost.");
+    } else {
+      status.setText("It's a tie.");
+    }
   }
 
   static class serverInterface {
