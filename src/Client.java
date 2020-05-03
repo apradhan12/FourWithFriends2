@@ -1,15 +1,27 @@
-import java.net.*;
-import java.io.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.*;
-import java.awt.event.*;
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+/**
+ * Client code for FourWithFriends.
+ */
 public class Client extends JFrame implements ActionListener, IClient {
 
   // create variables
@@ -31,12 +43,7 @@ public class Client extends JFrame implements ActionListener, IClient {
       {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
   };
 
-
-  //items for menu
-  private JMenuBar mBar;
-  private JMenu mGame;
   private JMenuItem mConnect;
-  private JMenuItem mHelp;
   private JMenuItem mExit;
 
   //icons
@@ -127,10 +134,11 @@ public class Client extends JFrame implements ActionListener, IClient {
     containerPanel.add(status);
 
     //Create the menu bar.
-    mBar = new JMenuBar();
+    //items for menu
+    JMenuBar mBar = new JMenuBar();
 
     //Build the file menu.
-    mGame = new JMenu("Game");
+    JMenu mGame = new JMenu("Game");
     mBar.add(mGame);
 
     //make and add JMenuItems
@@ -138,7 +146,7 @@ public class Client extends JFrame implements ActionListener, IClient {
     mConnect.addActionListener(this);
     mGame.add(mConnect);
 
-    mHelp = new JMenuItem("Help");
+    JMenuItem mHelp = new JMenuItem("Help");
     mHelp.addActionListener(this);
     mGame.add(mHelp);
 
@@ -226,9 +234,7 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   private void connectToServer(String host, int port) {
     System.out.println(String.format("Connecting to %s:%s", host, port));
-    Thread proxyServerThread = new Thread(() -> {
-      new ProxyServer(host, port, this);
-    });
+    Thread proxyServerThread = new Thread(() -> new ProxyServer(host, port, this));
     proxyServerThread.start();
   }
 
@@ -301,7 +307,6 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   private int chosenColumn = -1;
   private volatile boolean columnIsChosen = false;
-  private char playerTurn = 'N';
 
   //methods
   @Override
@@ -361,7 +366,6 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   @Override
   public void setPlayerTurn(char player) {
-    playerTurn = player;
     if (player == playerColor) {
       status.setText("It's your turn");
     } else {

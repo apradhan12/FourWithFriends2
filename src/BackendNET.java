@@ -3,12 +3,10 @@ import java.io.*;
 import java.util.Arrays;
 
 /**
- * ISTE-121 final project backend multithreaded server code
+ * Server code for FourWithFriends.
  *
- * @author Thomas Chenevey, Andrew Korchowsky
- * @version 1.1
- * @date: 4/27/2020
- * @project: four with friends
+ * @author Thomas Chenevey, Andrew Korchowsky, Aaron Pradhan
+ * @version 2.0
  */
 
 public class BackendNET {

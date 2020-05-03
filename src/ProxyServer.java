@@ -53,7 +53,6 @@ public class ProxyServer {
         client.setPlayerColor(message.getPlayer());
         out.writeObject(new SetPlayerColorClientMessage());
       } else if (data instanceof GetDropColumnServerMessage) {
-        GetDropColumnServerMessage message = (GetDropColumnServerMessage) data;
         int column = client.getDropColumn();
         out.writeObject(new GetDropColumnClientMessage(column));
       } else if (data instanceof SetPlayerTurnServerMessage) {

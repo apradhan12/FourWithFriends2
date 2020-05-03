@@ -127,7 +127,7 @@ public class Connect4WinChecker {
    * given column on a connect4 board, given whether that diagonal has a positive or negative slope
    */
   public static char[] getDiagonal(char[][] board, int column, boolean positiveSlope) {
-    List<Character> diagonalArrayList = new ArrayList<Character>();
+    List<Character> diagonalArrayList = new ArrayList<>();
     int[] diagonalStart = getDiagonalStart(board, column, positiveSlope);
     int rowIndex = diagonalStart[1];
     int columnIndex = diagonalStart[0];
@@ -135,11 +135,10 @@ public class Connect4WinChecker {
       diagonalArrayList.add(board[columnIndex][rowIndex]);
       if (positiveSlope) {
         rowIndex += 1;
-        columnIndex += 1;
       } else {
         rowIndex -= 1;
-        columnIndex += 1;
       }
+      columnIndex += 1;
     }
     char[] diagonal = new char[diagonalArrayList.size()];
     for (int i = 0; i < diagonal.length; i++) {
@@ -163,20 +162,17 @@ public class Connect4WinChecker {
     while (columnIndex >= 0 && rowIndex >= 0 && rowIndex < BOARD_HEIGHT) {
       if (positiveSlope) {
         rowIndex -= 1;
-        columnIndex -= 1;
       } else {
         rowIndex += 1;
-        columnIndex -= 1;
       }
+      columnIndex -= 1;
     }
     if (positiveSlope) {
       rowIndex += 1;
-      columnIndex += 1;
     } else {
       rowIndex -= 1;
-      columnIndex += 1;
     }
-    int[] diagonalStart = new int[]{columnIndex, rowIndex};
-    return diagonalStart;
+    columnIndex += 1;
+    return new int[]{columnIndex, rowIndex};
   }
 }
