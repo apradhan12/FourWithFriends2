@@ -317,7 +317,7 @@ public class Client extends JFrame implements ActionListener, IClient {
   public void playSound() {
     try {
       AudioInputStream audioInputStream = AudioSystem
-          .getAudioInputStream(new File("/ClientAssets/theme.wav").getAbsoluteFile());
+          .getAudioInputStream(new File("ClientAssets/theme.wav").getAbsoluteFile());
       Clip clip = AudioSystem.getClip();
       clip.open(audioInputStream);
       clip.start();
