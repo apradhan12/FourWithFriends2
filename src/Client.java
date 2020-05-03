@@ -4,8 +4,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -48,9 +50,20 @@ public class Client extends JFrame implements ActionListener, IClient {
   private JMenuItem mExit;
 
   //icons
-  private static final ImageIcon white = new ImageIcon("ClientAssets/white64.png");
-  private static final ImageIcon blue = new ImageIcon("ClientAssets/blue64.png");
-  private static final ImageIcon orange = new ImageIcon("ClientAssets/orange64.png");
+  private static ImageIcon white;
+  private static ImageIcon blue;
+  private static ImageIcon orange;
+
+  static {
+    try {
+      white = new ImageIcon(ImageIO.read(Client.class.getResource("/white64.png")));
+      blue = new ImageIcon(ImageIO.read(Client.class.getResource("/blue64.png")));
+      orange = new ImageIcon(ImageIO.read(Client.class.getResource("/orange64.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   private static final Map<Character, ImageIcon> CHARACTER_MAP = Map.of('B', blue,
       'O', orange, 'N', white);
 
@@ -230,8 +243,6 @@ public class Client extends JFrame implements ActionListener, IClient {
     mainGrid.add(R1C7);
 
     playerColor = 'N';
-
-    connectToServer("localhost", 16789);
   }
 
   private void connectToServer(String host, int port) {
@@ -304,7 +315,6 @@ public class Client extends JFrame implements ActionListener, IClient {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-    frame.playSound();
   }
 
   private int chosenColumn = -1;
@@ -316,23 +326,10 @@ public class Client extends JFrame implements ActionListener, IClient {
     playerColor = _c;
   }
 
-  public void playSound() {
-    try {
-      AudioInputStream audioInputStream = AudioSystem
-          .getAudioInputStream(new File("ClientAssets/theme.wav").getAbsoluteFile());
-      Clip clip = AudioSystem.getClip();
-      clip.open(audioInputStream);
-//      clip.start();
-    } catch (Exception ex) {
-      System.out.println("Error with playing sound.");
-      ex.printStackTrace();
-    }
-  }
-
   public void playSoundEffect() {
     try {
       AudioInputStream audioInputStream = AudioSystem
-          .getAudioInputStream(new File("ClientAssets/drop.wav").getAbsoluteFile());
+          .getAudioInputStream(getClass().getResource("/drop.wav"));
       Clip clip = AudioSystem.getClip();
       clip.open(audioInputStream);
       clip.start();
