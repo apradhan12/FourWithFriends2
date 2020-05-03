@@ -228,6 +228,8 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   //ActionListener things
   public void actionPerformed(ActionEvent event) {
+    System.out.println("An action was performed");
+
     //set object
     Object obj = event.getSource();
     serverInterface servI = new serverInterface();
@@ -332,19 +334,27 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
   }
 
-  void drop(int column) {
+  synchronized void drop(int column) {
+    System.out.println("Dropped in column " + column);
     chosenColumn = column;
     columnIsChosen = true;
+    System.out.println("Notifying all threads of the change");
+    notifyAll();
   }
 
   @Override
-  public int getDropColumn() {
+  public synchronized int getDropColumn() {
     columnIsChosen = false;
+    System.out.println("Getting the drop column");
     while (!columnIsChosen) {
+      System.out.println("Beginning to wait");
       try {
         wait();
-      } catch (InterruptedException ignored) {}
+      } catch (InterruptedException e) {
+        System.out.println("Interrupted");
+      }
     }
+    System.out.println("Got the drop column: " + chosenColumn);
     return chosenColumn;
   }
 

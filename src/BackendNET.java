@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * ISTE-121 final project backend multithreaded server code
@@ -118,6 +119,8 @@ public class BackendNET {
     int row = placePlayerToken(board, activePlayerColor, column);
     activePlayer.registerPlayerDrop(activePlayerColor, column, convertRowNum(row));
     opponent.registerPlayerDrop(activePlayerColor, column, convertRowNum(row));
+    System.out.println(String.format("The player placed in column %s, row %s", column, row));
+    System.out.println("Here is the new state of the board: " + Arrays.deepToString(board));
     if (Connect4WinChecker.checkWin(board, column)) {
       activePlayer.gameOver(activePlayerColor);
       opponent.gameOver(activePlayerColor);

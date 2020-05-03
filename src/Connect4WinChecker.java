@@ -62,9 +62,7 @@ public class Connect4WinChecker {
     int rowNum = 0;
     char nextChar = board[column][rowNum];
     if (nextChar == 'N') {
-      throw new IllegalArgumentException(
-          "For some reason the column that the player placed their piece into (" + column
-              + ") has no items");
+      return -1;
     }
     while (rowNum < (BOARD_HEIGHT - 1) && nextChar != 'N') {
       nextChar = board[column][rowNum + 1];
