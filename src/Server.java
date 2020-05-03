@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @version 2.0
  */
 
-public class BackendNET {
+public class Server {
 
   private static final char CLIENT1_COLOR = 'O';
   private static final char CLIENT2_COLOR = 'B';
@@ -19,7 +19,7 @@ public class BackendNET {
   private static final int PORT_NUM = 16789;
 
   public static void main(String[] args) {
-    new BackendNET().runServer();
+    new Server().runServer();
   }
 
   public void runServer() {
@@ -98,7 +98,7 @@ public class BackendNET {
    */
   private static int placePlayerToken(char[][] board, char player, int column) {
     // getRowNum returns the highest row with a token in it, so must add 1 to get blank spot
-    int row = Connect4WinChecker.getRowNum(board, column) + 1;
+    int row = WinChecker.getRowNum(board, column) + 1;
     board[column][row] = player;
     return row;
   }
@@ -119,7 +119,7 @@ public class BackendNET {
     opponent.registerPlayerDrop(activePlayerColor, column, convertRowNum(row));
     System.out.println(String.format("The player placed in column %s, row %s", column, row));
     System.out.println("Here is the new state of the board: " + Arrays.deepToString(board));
-    if (Connect4WinChecker.checkWin(board, column)) {
+    if (WinChecker.checkWin(board, column)) {
       activePlayer.gameOver(activePlayerColor);
       opponent.gameOver(activePlayerColor);
       return true;

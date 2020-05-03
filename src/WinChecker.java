@@ -6,7 +6,7 @@ import java.util.*;
  * @author Andrew Korchowsky
  * @version 4/25/2020
  */
-public class Connect4WinChecker {
+public class WinChecker {
 
   //Attributes
   private static final int BOARD_WIDTH = 7;
@@ -18,6 +18,10 @@ public class Connect4WinChecker {
    * pieces in a row horizontally, vertically, or diagonally
    */
   public static boolean checkWin(char[][] board, int column) {
+    if (getRowNum(board, column) == -1) {
+      throw new IllegalArgumentException(
+          String.format("The given column %d has no tokens", column));
+    }
     char playerColor = getPlayerColor(board, column);
     return (checkColumn(board, column, playerColor) ||
         checkRow(board, column, playerColor) ||
