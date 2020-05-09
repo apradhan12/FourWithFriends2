@@ -1,3 +1,5 @@
+package client;
+
 import dto.EmptyClientMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;

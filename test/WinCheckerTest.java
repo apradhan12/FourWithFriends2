@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import utils.WinChecker;
 
 /**
  * My Friend Aaron helped me with the methods to convert text to connect4 boards

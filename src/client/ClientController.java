@@ -1,3 +1,5 @@
+package client;
+
 import dto.ConnectionState;
 import dto.GameStatus;
 import dto.PlayerColor;

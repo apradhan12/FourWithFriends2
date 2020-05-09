@@ -1,3 +1,6 @@
+package server;
+
+import client.IClient;
 import dto.PlayerColor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
