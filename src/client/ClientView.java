@@ -25,13 +25,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import static client.ClientModel.NUM_ROWS;
+import static client.ClientModel.NUM_COLUMNS;
+
 /**
  * Client code for FourWithFriends.
  */
 public class ClientView extends JFrame implements ActionListener, IClientView {
-
-  private static final int NUM_ROWS = 6;
-  private static final int NUM_COLUMNS = 7;
 
   private PlayerColor playerColor;
   private ConnectionState connectionState;
@@ -61,11 +61,8 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
       PlayerColor.Orange, orange, PlayerColor.None, white);
 
   JButton[] columnButtons = new JButton[NUM_COLUMNS];
-
-  //array for local board state
   JLabel[][] guiBoard = new JLabel[NUM_COLUMNS][NUM_ROWS];
 
-  //constructor
   public ClientView(IClientModel model, IClientController controller) {
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
@@ -75,9 +72,9 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
     containerPanel.add(mainGrid, BorderLayout.CENTER);
     add(containerPanel);
 
-    //add objects to main grid
-    initializeGridCells();
+    // add objects to main grid
     initializeColumnButtons();
+    initializeGridCells();
 
     playerColor = PlayerColor.None;
 

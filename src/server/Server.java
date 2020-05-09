@@ -7,6 +7,9 @@ import java.io.*;
 import java.util.Arrays;
 import utils.WinChecker;
 
+import static client.ClientModel.NUM_ROWS;
+import static client.ClientModel.NUM_COLUMNS;
+
 /**
  * Server code for FourWithFriends.
  */
@@ -14,8 +17,6 @@ public class Server {
 
   private static final PlayerColor CLIENT1_COLOR = PlayerColor.Orange;
   private static final PlayerColor CLIENT2_COLOR = PlayerColor.Blue;
-  private static final int NUM_COLUMNS = 7;
-  private static final int NUM_ROWS = 6;
 
   private static final int PORT_NUM = 16789;
 
