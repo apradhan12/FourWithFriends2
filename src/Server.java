@@ -46,16 +46,6 @@ public class Server {
     }
   }
 
-  /**
-   * The client indexes rows with 0 at the top, but the server has 0 at the bottom.
-   * This is an involutory function, i.e. when performed twice returns the original result,
-   * so the method is the same for converting from client to server row numbers as server to
-   * client row numbers.
-   */
-  private static int convertRowNum(int clientRowNum) {
-    return (NUM_ROWS - 1) - clientRowNum;
-  }
-
   private static char[][] getInitialBoard() {
     char[][] board = new char[NUM_COLUMNS][NUM_ROWS];
     for (int col = 0; col < NUM_COLUMNS; col++) {
@@ -115,8 +105,8 @@ public class Server {
       column = activePlayer.getDropColumn();
     }
     int row = placePlayerToken(board, activePlayerColor, column);
-    activePlayer.registerPlayerDrop(activePlayerColor, column, convertRowNum(row));
-    opponent.registerPlayerDrop(activePlayerColor, column, convertRowNum(row));
+    activePlayer.registerPlayerDrop(activePlayerColor, column, row);
+    opponent.registerPlayerDrop(activePlayerColor, column, row);
     System.out.println(String.format("The player placed in column %s, row %s", column, row));
     System.out.println("Here is the new state of the board: " + Arrays.deepToString(board));
     if (WinChecker.checkWin(board, column)) {

@@ -27,6 +27,9 @@ import javax.swing.SwingConstants;
  */
 public class Client extends JFrame implements ActionListener, IClient {
 
+  private static final int NUM_ROWS = 6;
+  private static final int NUM_COLUMNS = 7;
+
   // create variables
   JPanel containerPanel = new JPanel();
   JLabel status = new JLabel("Waiting for game to start...");
@@ -67,83 +70,14 @@ public class Client extends JFrame implements ActionListener, IClient {
   private static final Map<Character, ImageIcon> CHARACTER_MAP = Map.of('B', blue,
       'O', orange, 'N', white);
 
-  //Labels
-  //Row 1 (starting from the bottom)
-  JLabel R1C1 = new JLabel(white);
-  JLabel R1C2 = new JLabel(white);
-  JLabel R1C3 = new JLabel(white);
-  JLabel R1C4 = new JLabel(white);
-  JLabel R1C5 = new JLabel(white);
-  JLabel R1C6 = new JLabel(white);
-  JLabel R1C7 = new JLabel(white);
-
-  //Row 2
-  JLabel R2C1 = new JLabel(white);
-  JLabel R2C2 = new JLabel(white);
-  JLabel R2C3 = new JLabel(white);
-  JLabel R2C4 = new JLabel(white);
-  JLabel R2C5 = new JLabel(white);
-  JLabel R2C6 = new JLabel(white);
-  JLabel R2C7 = new JLabel(white);
-
-  //Row 3
-  JLabel R3C1 = new JLabel(white);
-  JLabel R3C2 = new JLabel(white);
-  JLabel R3C3 = new JLabel(white);
-  JLabel R3C4 = new JLabel(white);
-  JLabel R3C5 = new JLabel(white);
-  JLabel R3C6 = new JLabel(white);
-  JLabel R3C7 = new JLabel(white);
-
-  //Row 4
-  JLabel R4C1 = new JLabel(white);
-  JLabel R4C2 = new JLabel(white);
-  JLabel R4C3 = new JLabel(white);
-  JLabel R4C4 = new JLabel(white);
-  JLabel R4C5 = new JLabel(white);
-  JLabel R4C6 = new JLabel(white);
-  JLabel R4C7 = new JLabel(white);
-
-  //Row 5
-  JLabel R5C1 = new JLabel(white);
-  JLabel R5C2 = new JLabel(white);
-  JLabel R5C3 = new JLabel(white);
-  JLabel R5C4 = new JLabel(white);
-  JLabel R5C5 = new JLabel(white);
-  JLabel R5C6 = new JLabel(white);
-  JLabel R5C7 = new JLabel(white);
-
-  //Row 6
-  JLabel R6C1 = new JLabel(white);
-  JLabel R6C2 = new JLabel(white);
-  JLabel R6C3 = new JLabel(white);
-  JLabel R6C4 = new JLabel(white);
-  JLabel R6C5 = new JLabel(white);
-  JLabel R6C6 = new JLabel(white);
-  JLabel R6C7 = new JLabel(white);
-
-  //Buttons (starting from the left)
-  JButton C1Button = new JButton("Drop Piece");
-  JButton C2Button = new JButton("Drop Piece");
-  JButton C3Button = new JButton("Drop Piece");
-  JButton C4Button = new JButton("Drop Piece");
-  JButton C5Button = new JButton("Drop Piece");
-  JButton C6Button = new JButton("Drop Piece");
-  JButton C7Button = new JButton("Drop Piece");
+  JButton[] columnButtons = new JButton[NUM_COLUMNS];
 
   //array for local board state
-  JLabel[][] guiBoard = {
-      {R6C1, R6C2, R6C3, R6C4, R6C5, R6C6, R6C7},
-      {R5C1, R5C2, R5C3, R5C4, R5C5, R5C6, R5C7},
-      {R4C1, R4C2, R4C3, R4C4, R4C5, R4C6, R4C7},
-      {R3C1, R3C2, R3C3, R3C4, R3C5, R3C6, R3C7},
-      {R2C1, R2C2, R2C3, R2C4, R2C5, R2C6, R2C7},
-      {R1C1, R1C2, R1C3, R1C4, R1C5, R1C6, R1C7}
-  };
-
+  JLabel[][] guiBoard = new JLabel[NUM_COLUMNS][NUM_ROWS];
 
   //constructor
   public Client() {
+
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
     status.setHorizontalAlignment(SwingConstants.LEFT);
@@ -179,68 +113,23 @@ public class Client extends JFrame implements ActionListener, IClient {
     add(containerPanel);
 
     //add objects to main grid
-    mainGrid.add(C1Button);
-    C1Button.addActionListener(this);
-    mainGrid.add(C2Button);
-    C2Button.addActionListener(this);
-    mainGrid.add(C3Button);
-    C3Button.addActionListener(this);
-    mainGrid.add(C4Button);
-    C4Button.addActionListener(this);
-    mainGrid.add(C5Button);
-    C5Button.addActionListener(this);
-    mainGrid.add(C6Button);
-    C6Button.addActionListener(this);
-    mainGrid.add(C7Button);
-    C7Button.addActionListener(this);
+    for (int row = 0; row < NUM_ROWS; row++) {
+      for (int col = 0; col < NUM_COLUMNS; col++) {
+        guiBoard[col][row] = new JLabel(white);
+      }
+    }
 
-    mainGrid.add(R6C1);
-    mainGrid.add(R6C2);
-    mainGrid.add(R6C3);
-    mainGrid.add(R6C4);
-    mainGrid.add(R6C5);
-    mainGrid.add(R6C6);
-    mainGrid.add(R6C7);
+    for (int row = NUM_ROWS - 1; row >= 0; row--) {
+      for (int col = 0; col < NUM_COLUMNS; col++) {
+        mainGrid.add(guiBoard[col][row]);
+      }
+    }
 
-    mainGrid.add(R5C1);
-    mainGrid.add(R5C2);
-    mainGrid.add(R5C3);
-    mainGrid.add(R5C4);
-    mainGrid.add(R5C5);
-    mainGrid.add(R5C6);
-    mainGrid.add(R5C7);
-
-    mainGrid.add(R4C1);
-    mainGrid.add(R4C2);
-    mainGrid.add(R4C3);
-    mainGrid.add(R4C4);
-    mainGrid.add(R4C5);
-    mainGrid.add(R4C6);
-    mainGrid.add(R4C7);
-
-    mainGrid.add(R3C1);
-    mainGrid.add(R3C2);
-    mainGrid.add(R3C3);
-    mainGrid.add(R3C4);
-    mainGrid.add(R3C5);
-    mainGrid.add(R3C6);
-    mainGrid.add(R3C7);
-
-    mainGrid.add(R2C1);
-    mainGrid.add(R2C2);
-    mainGrid.add(R2C3);
-    mainGrid.add(R2C4);
-    mainGrid.add(R2C5);
-    mainGrid.add(R2C6);
-    mainGrid.add(R2C7);
-
-    mainGrid.add(R1C1);
-    mainGrid.add(R1C2);
-    mainGrid.add(R1C3);
-    mainGrid.add(R1C4);
-    mainGrid.add(R1C5);
-    mainGrid.add(R1C6);
-    mainGrid.add(R1C7);
+    for (int col = 0; col < NUM_COLUMNS; col++) {
+      columnButtons[col] = new JButton("Drop Piece");
+      mainGrid.add(columnButtons[col]);
+      columnButtons[col].addActionListener(this);
+    }
 
     playerColor = 'N';
   }
@@ -271,38 +160,10 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
 
     //button 1
-    if (obj == C1Button) {
-      drop(0);
-    }
-
-    //button 2
-    if (obj == C2Button) {
-      drop(1);
-    }
-
-    //button 3
-    if (obj == C3Button) {
-      drop(2);
-    }
-
-    //button 4
-    if (obj == C4Button) {
-      drop(3);
-    }
-
-    //button 5
-    if (obj == C5Button) {
-      drop(4);
-    }
-
-    //button 6
-    if (obj == C6Button) {
-      drop(5);
-    }
-
-    //button 7
-    if (obj == C7Button) {
-      drop(6);
+    for (int col = 0; col < NUM_COLUMNS; col++) {
+      if (obj == columnButtons[col]) {
+        drop(col);
+      }
     }
   }
 
@@ -374,8 +235,8 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   @Override
   public void registerPlayerDrop(char player, int column, int row) {
-    guiBoard[row][column].setIcon(CHARACTER_MAP.get(player));
-    board[row][column] = player;
+    guiBoard[column][row].setIcon(CHARACTER_MAP.get(player));
+    board[column][row] = player;
     System.out.println("Here is Board: " + Arrays.deepToString(board));
     playSoundEffect();
   }
