@@ -4,11 +4,7 @@ import java.util.Arrays;
 
 /**
  * Server code for FourWithFriends.
- *
- * @author Thomas Chenevey, Andrew Korchowsky, Aaron Pradhan
- * @version 2.0
  */
-
 public class Server {
 
   private static final char CLIENT1_COLOR = 'O';

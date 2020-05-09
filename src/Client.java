@@ -30,29 +30,16 @@ public class Client extends JFrame implements ActionListener, IClient {
   private static final int NUM_ROWS = 6;
   private static final int NUM_COLUMNS = 7;
 
-  // create variables
+  private int chosenColumn = -1;
+  private volatile boolean columnIsChosen = false;
+  char playerColor;
+  char[][] board = new char[NUM_COLUMNS][NUM_ROWS];
+
   JPanel containerPanel = new JPanel();
   JLabel status = new JLabel("Waiting for game to start...");
-
   JPanel mainGrid = new JPanel(new GridLayout(0, 7));
-
-  //misc variables
-  char playerColor;
-
-  //array for local board state
-  char[][] board = {
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-      {'N', 'N', 'N', 'N', 'N', 'N', 'N'},
-  };
-
   private JMenuItem mConnect;
   private JMenuItem mExit;
-
-  //icons
   private static ImageIcon white;
   private static ImageIcon blue;
   private static ImageIcon orange;
@@ -77,61 +64,52 @@ public class Client extends JFrame implements ActionListener, IClient {
 
   //constructor
   public Client() {
-
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
     status.setHorizontalAlignment(SwingConstants.LEFT);
-
-    //Create the menu bar.
-    //items for menu
-    JMenuBar mBar = new JMenuBar();
-
-    //Build the file menu.
-    JMenu mGame = new JMenu("Game");
-    mBar.add(mGame);
-
-    //make and add JMenuItems
-    mConnect = new JMenuItem("Connect");
-    mConnect.addActionListener(this);
-    mGame.add(mConnect);
-
-    JMenuItem mHelp = new JMenuItem("Help");
-    mHelp.addActionListener(this);
-    mGame.add(mHelp);
-
-    mExit = new JMenuItem("Exit");
-    mExit.addActionListener(this);
-    mGame.add(mExit);
-
-    //set menu bar
-    setJMenuBar(mBar);
-
-    //main grid
-    mainGrid.setBackground(new Color(0, 0, 0));
-
+    setJMenuBar(createMenuBar());
+    mainGrid.setBackground(Color.BLACK);
     containerPanel.add(mainGrid, BorderLayout.CENTER);
     add(containerPanel);
 
     //add objects to main grid
-    for (int row = 0; row < NUM_ROWS; row++) {
-      for (int col = 0; col < NUM_COLUMNS; col++) {
-        guiBoard[col][row] = new JLabel(white);
-      }
-    }
+    initializeGridCells();
+    initializeColumnButtons();
 
+    playerColor = 'N';
+  }
+
+  private JMenuBar createMenuBar() {
+    JMenuBar mBar = new JMenuBar();
+    JMenu mGame = new JMenu("Game");
+    mBar.add(mGame);
+    mConnect = new JMenuItem("Connect");
+    mConnect.addActionListener(this);
+    mGame.add(mConnect);
+    JMenuItem mHelp = new JMenuItem("Help");
+    mHelp.addActionListener(this);
+    mGame.add(mHelp);
+    mExit = new JMenuItem("Exit");
+    mExit.addActionListener(this);
+    mGame.add(mExit);
+    return mBar;
+  }
+
+  private void initializeGridCells() {
     for (int row = NUM_ROWS - 1; row >= 0; row--) {
       for (int col = 0; col < NUM_COLUMNS; col++) {
+        guiBoard[col][row] = new JLabel(white);
         mainGrid.add(guiBoard[col][row]);
       }
     }
+  }
 
+  private void initializeColumnButtons() {
     for (int col = 0; col < NUM_COLUMNS; col++) {
       columnButtons[col] = new JButton("Drop Piece");
       mainGrid.add(columnButtons[col]);
       columnButtons[col].addActionListener(this);
     }
-
-    playerColor = 'N';
   }
 
   private void connectToServer(String host, int port) {
@@ -177,9 +155,6 @@ public class Client extends JFrame implements ActionListener, IClient {
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
-
-  private int chosenColumn = -1;
-  private volatile boolean columnIsChosen = false;
 
   //methods
   @Override
