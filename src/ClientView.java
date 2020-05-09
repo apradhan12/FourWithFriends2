@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 /**
  * Client code for FourWithFriends.
  */
-public class Client extends JFrame implements ActionListener, IClientView {
+public class ClientView extends JFrame implements ActionListener, IClientView {
 
   private static final int NUM_ROWS = 6;
   private static final int NUM_COLUMNS = 7;
@@ -47,9 +47,9 @@ public class Client extends JFrame implements ActionListener, IClientView {
 
   static {
     try {
-      white = new ImageIcon(ImageIO.read(Client.class.getResource("/white64.png")));
-      blue = new ImageIcon(ImageIO.read(Client.class.getResource("/blue64.png")));
-      orange = new ImageIcon(ImageIO.read(Client.class.getResource("/orange64.png")));
+      white = new ImageIcon(ImageIO.read(ClientView.class.getResource("/white64.png")));
+      blue = new ImageIcon(ImageIO.read(ClientView.class.getResource("/blue64.png")));
+      orange = new ImageIcon(ImageIO.read(ClientView.class.getResource("/orange64.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -64,7 +64,7 @@ public class Client extends JFrame implements ActionListener, IClientView {
   JLabel[][] guiBoard = new JLabel[NUM_COLUMNS][NUM_ROWS];
 
   //constructor
-  public Client(IClientModel model, IClientController controller) {
+  public ClientView(IClientModel model, IClientController controller) {
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
     status.setHorizontalAlignment(SwingConstants.LEFT);

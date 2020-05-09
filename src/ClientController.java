@@ -14,7 +14,7 @@ public class ClientController implements IClient, IClientController {
 
   public ClientController() {
     model = new ClientModel();
-    view = new Client(model, this);
+    view = new ClientView(model, this);
   }
 
   public void run() {
