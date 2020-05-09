@@ -1,3 +1,7 @@
+import dto.ConnectionState;
+import dto.GameStatus;
+import dto.PlayerColor;
+
 public class ClientModel implements IClientModel {
 
   public static final int NUM_ROWS = 6;
@@ -7,6 +11,8 @@ public class ClientModel implements IClientModel {
   private PlayerColor playerColor;
   private ConnectionState connectionState;
   private GameStatus gameStatus;
+  private int chosenColumn;
+  private volatile boolean columnIsChosen;
 
   public ClientModel() {
     initializeBoard();
@@ -21,7 +27,7 @@ public class ClientModel implements IClientModel {
 
   @Override
   public void setBoardCell(int column, int row, PlayerColor color) {
-    board[column][row] = color;
+    this.board[column][row] = color;
   }
 
   @Override
@@ -52,6 +58,26 @@ public class ClientModel implements IClientModel {
   @Override
   public void setGameStatus(GameStatus status) {
     this.gameStatus = status;
+  }
+
+  @Override
+  public int getChosenColumn() {
+    return chosenColumn;
+  }
+
+  @Override
+  public void setChosenColumn(int column) {
+    this.chosenColumn = column;
+  }
+
+  @Override
+  public boolean isColumnChosen() {
+    return columnIsChosen;
+  }
+
+  @Override
+  public void setColumnIsChosen(boolean columnIsChosen) {
+    this.columnIsChosen = columnIsChosen;
   }
 
   private void initializeBoard() {

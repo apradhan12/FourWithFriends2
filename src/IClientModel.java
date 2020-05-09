@@ -1,3 +1,7 @@
+import dto.ConnectionState;
+import dto.GameStatus;
+import dto.PlayerColor;
+
 public interface IClientModel {
 
   /**
@@ -21,4 +25,12 @@ public interface IClientModel {
   GameStatus getGameStatus();
 
   void setGameStatus(GameStatus status);
+
+  int getChosenColumn();
+
+  void setChosenColumn(int column);
+
+  boolean isColumnChosen();
+
+  void setColumnIsChosen(boolean columnIsChosen);
 }

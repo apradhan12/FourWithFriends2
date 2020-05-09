@@ -1,3 +1,4 @@
+import dto.PlayerColor;
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;
@@ -7,8 +8,8 @@ import java.util.Arrays;
  */
 public class Server {
 
-  private static final char CLIENT1_COLOR = 'O';
-  private static final char CLIENT2_COLOR = 'B';
+  private static final PlayerColor CLIENT1_COLOR = PlayerColor.Orange;
+  private static final PlayerColor CLIENT2_COLOR = PlayerColor.Blue;
   private static final int NUM_COLUMNS = 7;
   private static final int NUM_ROWS = 6;
 
@@ -42,20 +43,20 @@ public class Server {
     }
   }
 
-  private static char[][] getInitialBoard() {
-    char[][] board = new char[NUM_COLUMNS][NUM_ROWS];
+  private static PlayerColor[][] getInitialBoard() {
+    PlayerColor[][] board = new PlayerColor[NUM_COLUMNS][NUM_ROWS];
     for (int col = 0; col < NUM_COLUMNS; col++) {
       for (int row = 0; row < NUM_ROWS; row++) {
-        board[col][row] = 'N';
+        board[col][row] = PlayerColor.None;
       }
     }
     return board;
   }
 
-  private static boolean isBoardFull(char[][] board) {
+  private static boolean isBoardFull(PlayerColor[][] board) {
     for (int col = 0; col < NUM_COLUMNS; col++) {
       for (int row = 0; row < NUM_ROWS; row++) {
-        if (board[col][row] == 'N') {
+        if (board[col][row] == PlayerColor.None) {
           return false;
         }
       }
@@ -63,16 +64,16 @@ public class Server {
     return true;
   }
 
-  private static boolean isColumnFull(char[][] board, int column) {
-    for (char cell : board[column]) {
-      if (cell == 'N') {
+  private static boolean isColumnFull(PlayerColor[][] board, int column) {
+    for (PlayerColor cell : board[column]) {
+      if (cell == PlayerColor.None) {
         return false;
       }
     }
     return true;
   }
 
-  private static boolean isLegalMove(char[][] board, int column) {
+  private static boolean isLegalMove(PlayerColor[][] board, int column) {
     if (column < 0 || column > NUM_COLUMNS) {
       return false;
     }
@@ -82,7 +83,7 @@ public class Server {
   /**
    * Returns the row in which the token was placed.
    */
-  private static int placePlayerToken(char[][] board, char player, int column) {
+  private static int placePlayerToken(PlayerColor[][] board, PlayerColor player, int column) {
     // getRowNum returns the highest row with a token in it, so must add 1 to get blank spot
     int row = WinChecker.getRowNum(board, column) + 1;
     board[column][row] = player;
@@ -92,8 +93,8 @@ public class Server {
   /**
    * Returns true if the player won, false otherwise.
    */
-  private static boolean playTurn(char[][] board, IClient activePlayer, IClient opponent,
-      char activePlayerColor) {
+  private static boolean playTurn(PlayerColor[][] board, IClient activePlayer, IClient opponent,
+      PlayerColor activePlayerColor) {
     activePlayer.setPlayerTurn(activePlayerColor);
     opponent.setPlayerTurn(activePlayerColor);
     int column = activePlayer.getDropColumn();
@@ -114,7 +115,7 @@ public class Server {
   }
 
   public static void runGame(IClient client1, IClient client2) {
-    char[][] board = getInitialBoard();
+    PlayerColor[][] board = getInitialBoard();
     client1.setPlayerColor(CLIENT1_COLOR);
     client2.setPlayerColor(CLIENT2_COLOR);
     boolean isWin = false;
@@ -133,8 +134,8 @@ public class Server {
     System.out.println("Is the board full? " + isBoardFull(board));
     // can have board full and win at the same time, so need to store isWin boolean
     if (!isWin) {
-      client1.gameOver('N');
-      client2.gameOver('N');
+      client1.gameOver(PlayerColor.None);
+      client2.gameOver(PlayerColor.None);
     }
   }
 }

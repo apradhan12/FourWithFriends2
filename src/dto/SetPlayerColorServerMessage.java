@@ -1,15 +1,16 @@
-package messages;
+package dto;
 
 import java.io.Serializable;
 
 public class SetPlayerColorServerMessage implements Serializable {
-  private char player;
 
-  public SetPlayerColorServerMessage(char player) {
+  private PlayerColor player;
+
+  public SetPlayerColorServerMessage(PlayerColor player) {
     this.player = player;
   }
 
-  public char getPlayer() {
+  public PlayerColor getPlayer() {
     return player;
   }
 }

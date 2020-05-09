@@ -2,16 +2,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import messages.GameOverClientMessage;
-import messages.GameOverServerMessage;
-import messages.GetDropColumnClientMessage;
-import messages.GetDropColumnServerMessage;
-import messages.RegisterPlayerDropClientMessage;
-import messages.RegisterPlayerDropServerMessage;
-import messages.SetPlayerColorClientMessage;
-import messages.SetPlayerColorServerMessage;
-import messages.SetPlayerTurnClientMessage;
-import messages.SetPlayerTurnServerMessage;
+import dto.GameOverClientMessage;
+import dto.GameOverServerMessage;
+import dto.GetDropColumnClientMessage;
+import dto.GetDropColumnServerMessage;
+import dto.RegisterPlayerDropClientMessage;
+import dto.RegisterPlayerDropServerMessage;
+import dto.SetPlayerColorClientMessage;
+import dto.SetPlayerColorServerMessage;
+import dto.SetPlayerTurnClientMessage;
+import dto.SetPlayerTurnServerMessage;
 
 public class ProxyServer {
 

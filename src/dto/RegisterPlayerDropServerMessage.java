@@ -1,19 +1,19 @@
-package messages;
+package dto;
 
 import java.io.Serializable;
 
 public class RegisterPlayerDropServerMessage implements Serializable {
-  private char player;
+  private PlayerColor player;
   private int column;
   private int row;
 
-  public RegisterPlayerDropServerMessage(char player, int column, int row) {
+  public RegisterPlayerDropServerMessage(PlayerColor player, int column, int row) {
     this.player = player;
     this.column = column;
     this.row = row;
   }
 
-  public char getPlayer() {
+  public PlayerColor getPlayer() {
     return player;
   }
 

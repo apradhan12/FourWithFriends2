@@ -1,9 +1,10 @@
+import dto.ConnectionState;
+import dto.PlayerColor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
@@ -25,15 +26,15 @@ import javax.swing.SwingConstants;
 /**
  * Client code for FourWithFriends.
  */
-public class Client extends JFrame implements ActionListener, IClient {
+public class Client extends JFrame implements ActionListener, IClientView {
 
   private static final int NUM_ROWS = 6;
   private static final int NUM_COLUMNS = 7;
 
-  private int chosenColumn = -1;
-  private volatile boolean columnIsChosen = false;
-  char playerColor;
-  char[][] board = new char[NUM_COLUMNS][NUM_ROWS];
+  private PlayerColor playerColor;
+  private ConnectionState connectionState;
+  private final IClientModel model;
+  private final IClientController controller;
 
   JPanel containerPanel = new JPanel();
   JLabel status = new JLabel("Waiting for game to start...");
@@ -54,8 +55,8 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
   }
 
-  private static final Map<Character, ImageIcon> CHARACTER_MAP = Map.of('B', blue,
-      'O', orange, 'N', white);
+  private static final Map<PlayerColor, ImageIcon> CHARACTER_MAP = Map.of(PlayerColor.Blue, blue,
+      PlayerColor.Orange, orange, PlayerColor.None, white);
 
   JButton[] columnButtons = new JButton[NUM_COLUMNS];
 
@@ -63,7 +64,7 @@ public class Client extends JFrame implements ActionListener, IClient {
   JLabel[][] guiBoard = new JLabel[NUM_COLUMNS][NUM_ROWS];
 
   //constructor
-  public Client() {
+  public Client(IClientModel model, IClientController controller) {
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
     status.setHorizontalAlignment(SwingConstants.LEFT);
@@ -76,7 +77,20 @@ public class Client extends JFrame implements ActionListener, IClient {
     initializeGridCells();
     initializeColumnButtons();
 
-    playerColor = 'N';
+    playerColor = PlayerColor.None;
+
+    this.model = model;
+    this.controller = controller;
+  }
+
+  @Override
+  public void render() {
+    setTitle("FourWithFriends");
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(700, 600);
+    pack();
+    setLocationRelativeTo(null);
+    setVisible(true);
   }
 
   private JMenuBar createMenuBar() {
@@ -112,17 +126,9 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
   }
 
-  private void connectToServer(String host, int port) {
-    System.out.println(String.format("Connecting to %s:%s", host, port));
-    Thread proxyServerThread = new Thread(() -> new ProxyServer(host, port, this));
-    proxyServerThread.start();
-  }
-
-  //ActionListener things
   public void actionPerformed(ActionEvent event) {
     System.out.println("An action was performed");
 
-    //set object
     Object obj = event.getSource();
 
     if (obj == mConnect) {
@@ -131,35 +137,16 @@ public class Client extends JFrame implements ActionListener, IClient {
       int port = Integer.parseInt(stPort);
       String ip = JOptionPane
           .showInputDialog(null, "Input Server IP \n Or Click OK for default", "localhost");
-      connectToServer(ip, port);
+      controller.connectToServer(ip, port);
     }
     if (obj == mExit) {
       System.exit(0);
     }
-
-    //button 1
     for (int col = 0; col < NUM_COLUMNS; col++) {
       if (obj == columnButtons[col]) {
-        drop(col);
+        controller.dropToken(col);
       }
     }
-  }
-
-  //main
-  public static void main(String[] args) {
-    Client frame = new Client();
-    frame.setTitle("FourWithFriends");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(700, 600);
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
-
-  //methods
-  @Override
-  public void setPlayerColor(char _c) {
-    playerColor = _c;
   }
 
   public void playSoundEffect() {
@@ -175,56 +162,46 @@ public class Client extends JFrame implements ActionListener, IClient {
     }
   }
 
-  synchronized void drop(int column) {
-    System.out.println("Dropped in column " + column);
-    chosenColumn = column;
-    columnIsChosen = true;
-    System.out.println("Notifying all threads of the change");
-    notifyAll();
-  }
-
   @Override
-  public synchronized int getDropColumn() {
-    columnIsChosen = false;
-    System.out.println("Getting the drop column");
-    while (!columnIsChosen) {
-      System.out.println("Beginning to wait");
-      try {
-        wait();
-      } catch (InterruptedException e) {
-        System.out.println("Interrupted");
+  public void updateBoardState() {
+    PlayerColor[][] board = model.getBoard();
+    for (int col = 0; col < NUM_COLUMNS; col++) {
+      for (int row = 0; row < NUM_ROWS; row++) {
+        guiBoard[col][row].setIcon(CHARACTER_MAP.get(board[col][row]));
       }
     }
-    System.out.println("Got the drop column: " + chosenColumn);
-    return chosenColumn;
-  }
-
-  @Override
-  public void setPlayerTurn(char player) {
-    if (player == playerColor) {
-      status.setText("It's your turn");
-    } else {
-      status.setText("It's the opponent's turn");
-    }
-  }
-
-  @Override
-  public void registerPlayerDrop(char player, int column, int row) {
-    guiBoard[column][row].setIcon(CHARACTER_MAP.get(player));
-    board[column][row] = player;
     System.out.println("Here is Board: " + Arrays.deepToString(board));
     playSoundEffect();
   }
 
   @Override
-  public void gameOver(char winner) {
-    if (winner == playerColor) {
-      status.setText("You won!");
-    } else if (winner != 'N') {
-      status.setText("You lost.");
-    } else {
-      status.setText("It's a tie.");
-    }
+  public void updatePlayerColor() {
+    playerColor = model.getPlayerColor();
   }
 
+  @Override
+  public void updateConnectionState() {
+    connectionState = model.getConnectionState();
+  }
+
+  @Override
+  public void updateGameStatus() {
+    switch (model.getGameStatus()) {
+      case PlayerTurn:
+        status.setText("It's your turn");
+        break;
+      case OpponentTurn:
+        status.setText("It's the opponent's turn");
+        break;
+      case Win:
+        status.setText("You won!");
+        break;
+      case Loss:
+        status.setText("You lost.");
+        break;
+      case Draw:
+        status.setText("It's a tie.");
+        break;
+    }
+  }
 }

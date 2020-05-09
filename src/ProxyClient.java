@@ -1,12 +1,13 @@
+import dto.PlayerColor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import messages.GameOverServerMessage;
-import messages.GetDropColumnClientMessage;
-import messages.GetDropColumnServerMessage;
-import messages.RegisterPlayerDropServerMessage;
-import messages.SetPlayerColorServerMessage;
-import messages.SetPlayerTurnServerMessage;
+import dto.GameOverServerMessage;
+import dto.GetDropColumnClientMessage;
+import dto.GetDropColumnServerMessage;
+import dto.RegisterPlayerDropServerMessage;
+import dto.SetPlayerColorServerMessage;
+import dto.SetPlayerTurnServerMessage;
 
 public class ProxyClient implements IClient {
 
@@ -19,7 +20,7 @@ public class ProxyClient implements IClient {
   }
 
   @Override
-  public void setPlayerColor(char player) {
+  public void setPlayerColor(PlayerColor player) {
     try {
       out.writeObject(new SetPlayerColorServerMessage(player));
       in.readObject();
@@ -42,7 +43,7 @@ public class ProxyClient implements IClient {
   }
 
   @Override
-  public void setPlayerTurn(char player) {
+  public void setPlayerTurn(PlayerColor player) {
     try {
       out.writeObject(new SetPlayerTurnServerMessage(player));
       in.readObject();
@@ -53,7 +54,7 @@ public class ProxyClient implements IClient {
   }
 
   @Override
-  public void registerPlayerDrop(char player, int column, int row) {
+  public void registerPlayerDrop(PlayerColor player, int column, int row) {
     try {
       out.writeObject(new RegisterPlayerDropServerMessage(player, column, row));
       in.readObject();
@@ -64,7 +65,7 @@ public class ProxyClient implements IClient {
   }
 
   @Override
-  public void gameOver(char winner) {
+  public void gameOver(PlayerColor winner) {
     try {
       out.writeObject(new GameOverServerMessage(winner));
       in.readObject();

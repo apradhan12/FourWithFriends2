@@ -1,15 +1,16 @@
-package messages;
+package dto;
 
 import java.io.Serializable;
 
 public class GameOverServerMessage implements Serializable {
-  private char winner;
 
-  public GameOverServerMessage(char winner) {
+  private PlayerColor winner;
+
+  public GameOverServerMessage(PlayerColor winner) {
     this.winner = winner;
   }
 
-  public char getWinner() {
+  public PlayerColor getWinner() {
     return winner;
   }
 }
