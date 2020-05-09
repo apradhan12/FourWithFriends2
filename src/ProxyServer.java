@@ -1,16 +1,13 @@
+import dto.EmptyClientMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import dto.GameOverClientMessage;
 import dto.GameOverServerMessage;
 import dto.GetDropColumnClientMessage;
 import dto.GetDropColumnServerMessage;
-import dto.RegisterPlayerDropClientMessage;
 import dto.RegisterPlayerDropServerMessage;
-import dto.SetPlayerColorClientMessage;
 import dto.SetPlayerColorServerMessage;
-import dto.SetPlayerTurnClientMessage;
 import dto.SetPlayerTurnServerMessage;
 
 public class ProxyServer {
@@ -51,22 +48,22 @@ public class ProxyServer {
       if (data instanceof SetPlayerColorServerMessage) {
         SetPlayerColorServerMessage message = (SetPlayerColorServerMessage) data;
         client.setPlayerColor(message.getPlayer());
-        out.writeObject(new SetPlayerColorClientMessage());
+        out.writeObject(new EmptyClientMessage());
       } else if (data instanceof GetDropColumnServerMessage) {
         int column = client.getDropColumn();
         out.writeObject(new GetDropColumnClientMessage(column));
       } else if (data instanceof SetPlayerTurnServerMessage) {
         SetPlayerTurnServerMessage message = (SetPlayerTurnServerMessage) data;
         client.setPlayerTurn(message.getPlayer());
-        out.writeObject(new SetPlayerTurnClientMessage());
+        out.writeObject(new EmptyClientMessage());
       } else if (data instanceof RegisterPlayerDropServerMessage) {
         RegisterPlayerDropServerMessage message = (RegisterPlayerDropServerMessage) data;
         client.registerPlayerDrop(message.getPlayer(), message.getColumn(), message.getRow());
-        out.writeObject(new RegisterPlayerDropClientMessage());
+        out.writeObject(new EmptyClientMessage());
       } else if (data instanceof GameOverServerMessage) {
         GameOverServerMessage message = (GameOverServerMessage) data;
         client.gameOver(message.getWinner());
-        out.writeObject(new GameOverClientMessage());
+        out.writeObject(new EmptyClientMessage());
         return false;
       }
       return true;
