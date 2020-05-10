@@ -1,4 +1,4 @@
-package client;
+package com.fourwithfriends.client;
 
 import com.fourwithfriends.dto.PlayerColor;
 

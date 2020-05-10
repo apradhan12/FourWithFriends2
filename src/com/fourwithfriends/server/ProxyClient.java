@@ -1,6 +1,6 @@
-package server;
+package com.fourwithfriends.server;
 
-import client.IClient;
+import com.fourwithfriends.client.IClient;
 import com.fourwithfriends.dto.PlayerColor;
 import java.io.IOException;
 import java.io.ObjectInputStream;

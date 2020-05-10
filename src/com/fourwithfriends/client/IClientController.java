@@ -1,4 +1,4 @@
-package client;
+package com.fourwithfriends.client;
 
 public interface IClientController {
 

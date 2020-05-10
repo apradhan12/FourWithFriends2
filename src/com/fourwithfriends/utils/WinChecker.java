@@ -1,10 +1,10 @@
-package utils;
+package com.fourwithfriends.utils;
 
 import com.fourwithfriends.dto.PlayerColor;
 import java.util.*;
 
-import static client.ClientModel.NUM_COLUMNS;
-import static client.ClientModel.NUM_ROWS;
+import static com.fourwithfriends.client.ClientModel.NUM_COLUMNS;
+import static com.fourwithfriends.client.ClientModel.NUM_ROWS;
 
 /**
  * A class to determine if a player has won on a given connect4 board state

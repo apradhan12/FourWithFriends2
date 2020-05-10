@@ -1,14 +1,14 @@
-package server;
+package com.fourwithfriends.server;
 
-import client.IClient;
+import com.fourwithfriends.client.IClient;
 import com.fourwithfriends.dto.PlayerColor;
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;
-import utils.WinChecker;
+import com.fourwithfriends.utils.WinChecker;
 
-import static client.ClientModel.NUM_ROWS;
-import static client.ClientModel.NUM_COLUMNS;
+import static com.fourwithfriends.client.ClientModel.NUM_ROWS;
+import static com.fourwithfriends.client.ClientModel.NUM_COLUMNS;
 
 /**
  * Server code for FourWithFriends.
