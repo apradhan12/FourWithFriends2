@@ -35,8 +35,8 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
 
   private PlayerColor playerColor;
   private ConnectionState connectionState;
-  private final IClientModel model;
-  private final IClientController controller;
+  private IClientModel model;
+  private IClientController controller;
 
   JPanel containerPanel = new JPanel();
   JLabel status = new JLabel("Waiting for game to start...");
@@ -63,7 +63,7 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
   JButton[] columnButtons = new JButton[NUM_COLUMNS];
   JLabel[][] guiBoard = new JLabel[NUM_COLUMNS][NUM_ROWS];
 
-  public ClientView(IClientModel model, IClientController controller) {
+  public ClientView() {
     containerPanel.setLayout(new BorderLayout());
     containerPanel.add(status, BorderLayout.NORTH);
     status.setHorizontalAlignment(SwingConstants.LEFT);
@@ -77,9 +77,6 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
     initializeGridCells();
 
     playerColor = PlayerColor.None;
-
-    this.model = model;
-    this.controller = controller;
   }
 
   @Override
@@ -90,6 +87,16 @@ public class ClientView extends JFrame implements ActionListener, IClientView {
     pack();
     setLocationRelativeTo(null);
     setVisible(true);
+  }
+
+  @Override
+  public void setModel(IClientModel model) {
+    this.model = model;
+  }
+
+  @Override
+  public void setController(IClientController controller) {
+    this.controller = controller;
   }
 
   private JMenuBar createMenuBar() {

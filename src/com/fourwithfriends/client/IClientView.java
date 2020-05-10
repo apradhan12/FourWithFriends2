@@ -11,4 +11,8 @@ public interface IClientView {
   void updateConnectionState();
 
   void render();
+
+  void setModel(IClientModel model);
+
+  void setController(IClientController controller);
 }
