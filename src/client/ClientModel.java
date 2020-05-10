@@ -1,8 +1,8 @@
 package client;
 
-import dto.ConnectionState;
-import dto.GameStatus;
-import dto.PlayerColor;
+import com.fourwithfriends.dto.ConnectionState;
+import com.fourwithfriends.dto.GameStatus;
+import com.fourwithfriends.dto.PlayerColor;
 
 public class ClientModel implements IClientModel {
 

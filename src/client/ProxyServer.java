@@ -1,16 +1,16 @@
 package client;
 
-import dto.EmptyClientMessage;
+import com.fourwithfriends.dto.EmptyClientMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import dto.GameOverServerMessage;
-import dto.GetDropColumnClientMessage;
-import dto.GetDropColumnServerMessage;
-import dto.RegisterPlayerDropServerMessage;
-import dto.SetPlayerColorServerMessage;
-import dto.SetPlayerTurnServerMessage;
+import com.fourwithfriends.dto.GameOverServerMessage;
+import com.fourwithfriends.dto.GetDropColumnClientMessage;
+import com.fourwithfriends.dto.GetDropColumnServerMessage;
+import com.fourwithfriends.dto.RegisterPlayerDropServerMessage;
+import com.fourwithfriends.dto.SetPlayerColorServerMessage;
+import com.fourwithfriends.dto.SetPlayerTurnServerMessage;
 
 public class ProxyServer {
 

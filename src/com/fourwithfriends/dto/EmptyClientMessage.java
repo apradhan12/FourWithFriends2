@@ -1,4 +1,4 @@
-package dto;
+package com.fourwithfriends.dto;
 
 import java.io.Serializable;
 

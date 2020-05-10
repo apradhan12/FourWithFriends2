@@ -1,7 +1,7 @@
 package server;
 
 import client.IClient;
-import dto.PlayerColor;
+import com.fourwithfriends.dto.PlayerColor;
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package client;
 
-import dto.PlayerColor;
+import com.fourwithfriends.dto.PlayerColor;
 
 /**
  * The client does not perform any logic. It simply gives moves to the server

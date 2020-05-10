@@ -1,7 +1,7 @@
 package client;
 
-import dto.ConnectionState;
-import dto.PlayerColor;
+import com.fourwithfriends.dto.ConnectionState;
+import com.fourwithfriends.dto.PlayerColor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
