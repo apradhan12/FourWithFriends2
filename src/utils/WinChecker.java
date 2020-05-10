@@ -1,10 +1,10 @@
 package utils;
 
-import dto.PlayerColor;
+import com.fourwithfriends.dto.PlayerColor;
 import java.util.*;
 
-import static client.ClientModel.NUM_ROWS;
 import static client.ClientModel.NUM_COLUMNS;
+import static client.ClientModel.NUM_ROWS;
 
 /**
  * A class to determine if a player has won on a given connect4 board state
@@ -54,8 +54,8 @@ public class WinChecker {
    */
   public static boolean checkRow(PlayerColor[][] board, int column, PlayerColor playerColor) {
     int rowNum = getRowNum(board, column);
-    PlayerColor[] row = new PlayerColor[NUM_ROWS];
-    for (int i = 0; i < NUM_ROWS; i++) {
+    PlayerColor[] row = new PlayerColor[NUM_COLUMNS];
+    for (int i = 0; i < NUM_COLUMNS; i++) {
       row[i] = board[i][rowNum];
     }
     return checkLine(row, playerColor);
@@ -72,13 +72,13 @@ public class WinChecker {
     if (nextChar == PlayerColor.None) {
       return -1;
     }
-    while (rowNum < (NUM_COLUMNS - 1) && nextChar != PlayerColor.None) {
+    while (rowNum < (NUM_ROWS - 1) && nextChar != PlayerColor.None) {
       nextChar = board[column][rowNum + 1];
       rowNum += 1;
     }
     if (nextChar == PlayerColor.None) {
       return rowNum - 1;
-    } else if (rowNum == (NUM_COLUMNS - 1)) {
+    } else if (rowNum == (NUM_ROWS - 1)) {
       return rowNum;
     } else {
       return rowNum - 1;
@@ -139,7 +139,9 @@ public class WinChecker {
     int[] diagonalStart = getDiagonalStart(board, column, positiveSlope);
     int rowIndex = diagonalStart[1];
     int columnIndex = diagonalStart[0];
-    while (columnIndex < NUM_ROWS && rowIndex < NUM_COLUMNS && rowIndex >= 0) {
+    System.out.println("Diagonal start is " + Arrays.toString(diagonalStart));
+    while (columnIndex < NUM_COLUMNS && rowIndex < NUM_ROWS && rowIndex >= 0) {
+      System.out.println(String.format("Column %d, row %d", columnIndex, rowIndex));
       diagonalArrayList.add(board[columnIndex][rowIndex]);
       if (positiveSlope) {
         rowIndex += 1;
@@ -167,7 +169,7 @@ public class WinChecker {
   public static int[] getDiagonalStart(PlayerColor[][] board, int column, boolean positiveSlope) {
     int rowIndex = getRowNum(board, column);
     int columnIndex = column;
-    while (columnIndex >= 0 && rowIndex >= 0 && rowIndex < NUM_COLUMNS) {
+    while (columnIndex >= 0 && rowIndex >= 0 && rowIndex < NUM_ROWS) {
       if (positiveSlope) {
         rowIndex -= 1;
       } else {

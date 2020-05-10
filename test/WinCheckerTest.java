@@ -1,4 +1,4 @@
-import dto.PlayerColor;
+import com.fourwithfriends.dto.PlayerColor;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
